@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - run: nix build --no-write-lock-file
+      # tests, palette-is-current, module-wiring, lua-is-clean, shell-is-clean
+      - run: nix flake check --no-write-lock-file
+      - run: nix fmt -- --ci
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - run: nix run nixpkgs#stylua -- --check colors lua
+      - run: nix run nixpkgs#luajitPackages.luacheck -- colors lua
+      - run: nix run nixpkgs#shellcheck -- generate.sh tests/run.sh
+      - run: nix run nixpkgs#shfmt -- -d -i 2 -ci generate.sh tests/run.sh
