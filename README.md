@@ -35,7 +35,9 @@ Came over from my rice, **[rokokol/huix](https://github.com/rokokol/huix)**
 ## What it looks like
 
 ![neovim in the dark variant, with a file tree and a start screen](docs/screenshot.png)
-> The file tree, the start screen and the tab bar carry no integration of their own — they take the core groups, which is what an integration should be needed for as rarely as possible
+
+![the telescope picker over a Nix file, previewing markdown](docs/screenshot-telescope.png)
+> The telescope integration
 
 ## Install
 
