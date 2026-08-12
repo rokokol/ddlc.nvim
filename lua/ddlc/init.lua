@@ -3,9 +3,14 @@ local M = {}
 M.defaults = {
   -- "auto" reads vim.o.background, which is what :set background=light already moves
   variant = "auto",
-  -- Clears the grounds painted with base00 and nothing else: a cursor line and a float sit on
-  -- base01, and clearing those too would leave the editor with no shape at all
+  -- Clears the grounds painted with base00 and nothing else: a cursor line, a selection and a
+  -- completion menu sit on base01, and clearing those too would leave the editor with no shape
   transparent = false,
+  -- Float windows are a role rather than a colour, so they get a switch of their own: it clears
+  -- NormalFloat and the two groups around it, which is every float that links to them — which-key,
+  -- lspsaga, telescope's preview — and leaves the border to carry the shape. Unset means it
+  -- follows `transparent`, because a float with no ground over an opaque buffer is text on text
+  transparent_floats = nil,
   italic_comments = true,
   integrations = {
     telescope = true,
@@ -73,14 +78,32 @@ function M.groups(variant, config)
   end
   merge(cfg.overrides)
 
+  local function clear(spec)
+    local cleared = vim.deepcopy(spec)
+    cleared.bg = nil
+    return cleared
+  end
+
   -- One sweep rather than a flag threaded through every table: what makes a window opaque is
   -- the background colour itself, so that is what the option is about
   if cfg.transparent then
     for group, spec in pairs(groups) do
       if spec.bg == c.base00 then
-        local cleared = vim.deepcopy(spec)
-        cleared.bg = nil
-        groups[group] = cleared
+        groups[group] = clear(spec)
+      end
+    end
+  end
+
+  -- By name, not by colour: base01 is also the cursor line, the selection and the completion
+  -- menu, and those are not floats
+  local floats = cfg.transparent_floats
+  if floats == nil then
+    floats = cfg.transparent
+  end
+  if floats then
+    for _, group in ipairs({ "NormalFloat", "FloatBorder", "FloatTitle" }) do
+      if groups[group] then
+        groups[group] = clear(groups[group])
       end
     end
   end

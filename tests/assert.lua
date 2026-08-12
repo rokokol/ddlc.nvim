@@ -52,7 +52,28 @@ check("the buffer ground goes", hl("Normal").bg == nil, hl("Normal"))
 check("the gutter ground goes", hl("LineNr").bg == nil, hl("LineNr"))
 check("the sign column ground goes", hl("SignColumn").bg == nil, hl("SignColumn"))
 check("the cursor line stays", hex(hl("CursorLine").bg) == dark.base01, hex(hl("CursorLine").bg))
-check("floats stay", hex(hl("NormalFloat").bg) == dark.base01, hex(hl("NormalFloat").bg))
+-- Floats are a role of their own: which-key, lspsaga and telescope's preview all link to
+-- NormalFloat, so one switch is every one of them. Unset, it follows the buffer
+check("floats follow the buffer", hl("NormalFloat").bg == nil, hl("NormalFloat"))
+check("the border goes with them", hl("FloatBorder").bg == nil, hl("FloatBorder"))
+check("the border still carries a colour", hex(hl("FloatBorder").fg) == dark.base03, hex(hl("FloatBorder").fg))
+check("the completion menu is not a float", hex(hl("Pmenu").bg) == dark.base01, hex(hl("Pmenu").bg))
+
+reset()
+ddlc.setup({ transparent = true, transparent_floats = false })
+vim.cmd("colorscheme ddlc")
+check("floats can be kept on a transparent theme", hex(hl("NormalFloat").bg) == dark.base01, hex(hl("NormalFloat").bg))
+check("while the buffer is still cleared", hl("Normal").bg == nil, hl("Normal"))
+
+reset()
+ddlc.setup({ transparent_floats = true })
+vim.cmd("colorscheme ddlc")
+check("floats can be cleared on an opaque theme", hl("NormalFloat").bg == nil, hl("NormalFloat"))
+check("and the buffer keeps its ground", hex(hl("Normal").bg) == dark.base00, hex(hl("Normal").bg))
+
+reset()
+vim.cmd("colorscheme ddlc")
+check("opaque by default, floats included", hex(hl("NormalFloat").bg) == dark.base01, hex(hl("NormalFloat").bg))
 
 -- An integration that is off leaves nothing behind, so a plugin the user does not have cannot
 -- be styled by accident

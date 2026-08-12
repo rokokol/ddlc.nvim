@@ -86,6 +86,7 @@ Then `:colorscheme ddlc`. `setup` is optional — without it the theme takes its
 require("ddlc").setup({
   variant = "auto",
   transparent = false,
+  transparent_floats = nil,   -- follows transparent
   italic_comments = true,
   integrations = { telescope = true },
   overrides = {},
@@ -95,7 +96,8 @@ require("ddlc").setup({
 | | | |
 | --- | --- | --- |
 | `variant` | `"auto"`, `"dark"`, `"light"` | `auto` reads `vim.o.background`, so `:set background=light` switches the theme |
-| `transparent` | `false` | see below |
+| `transparent` | `false` | the buffer ground; see below |
+| `transparent_floats` | follows `transparent` | float windows, which is every plugin that links to `NormalFloat` |
 | `italic_comments` | `true` | comments and block quotes |
 | `integrations.telescope` | `true` | off leaves the `Telescope*` groups untouched |
 | `overrides` | `{}` | `{ Normal = { fg = "#FF0000" } }` — merged last, so one group can move without forking the theme |
@@ -104,9 +106,13 @@ require("ddlc").setup({
 
 ## Transparency
 
-`transparent` clears the grounds painted with `base00` and only those. A cursor line, a float and a completion menu sit on `base01`, and clearing those too leaves an editor with no shape at all — the point is to let the terminal's own background through the text area, not to erase every surface
+`transparent` clears the grounds painted with `base00` and only those. A cursor line, a selection and a completion menu sit on `base01`, and clearing those too leaves an editor with no shape at all — the point is to let the terminal's own background through the text area, not to erase every surface
 
-It is one sweep over the finished table rather than a flag threaded through each group, because what makes a window opaque is the background colour itself. A plugin that reads `Normal` at its own setup time and paints a bar out of it is the one case this cannot reach: it has already copied a colour that is no longer there, and it has to be told to re-read
+It is one sweep over the finished table rather than a flag threaded through each group, because what makes a window opaque is the background colour itself. A plugin that reads `Normal` at its own setup time and paints a bar out of it is the one case this cannot reach — see [workarounds.md](workarounds.md)
+
+`transparent_floats` is separate and works the other way round, by name: it clears `NormalFloat`, `FloatBorder` and `FloatTitle`, leaving the border to carry the shape. That covers every float that links to them — which-key's pad, lspsaga's windows, telescope's preview — which is why it is one switch and not an integration per plugin. `base01` alone could not select them: the cursor line and the completion menu wear the same colour and are not floats
+
+Unset it follows `transparent`, which is the combination that makes sense: a float with no ground over an *opaque* buffer is text on text. Set it outright to take either half on its own
 
 ## What it covers
 
@@ -135,6 +141,7 @@ lua/ddlc/         setup, the load, and the group tables
 lua/ddlc/palette.lua   generated from the base16 schemes — the only file here that is
 generate.sh       regenerates it
 nix/              package.nix, module.nix, module-test.nix
+workarounds.md    upstream defects this theme is shaped by
 ```
 
 ## License
