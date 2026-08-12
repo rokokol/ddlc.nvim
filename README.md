@@ -10,8 +10,6 @@
 [![license](https://img.shields.io/badge/MIT-3DA639?style=flat)](LICENSE)
 [![build](https://github.com/rokokol/ddlc.nvim/actions/workflows/build.yml/badge.svg)](https://github.com/rokokol/ddlc.nvim/actions/workflows/build.yml)
 
-[Русский](README.ru.md)
-
 </div>
 
 Every colour is measured off [ddlc.moe](https://ddlc.moe) by [ddlc-palette](https://github.com/rokokol/ddlc-palette) and arrives here as a base16 scheme — the theme picks which slot goes where and nothing else. Core groups, treesitter captures, LSP semantic tokens and diagnostics, plus a telescope integration
