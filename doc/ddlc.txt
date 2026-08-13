@@ -1,0 +1,129 @@
+*ddlc.txt*  The Doki Doki Literature Club colorscheme for neovim
+
+==============================================================================
+CONTENTS                                                       *ddlc-contents*
+
+  1. Introduction ................................. |ddlc-introduction|
+  2. Setup ........................................ |ddlc-setup|
+  3. Options ...................................... |ddlc-options|
+  4. Variants ..................................... |ddlc-variants|
+  5. Transparency ................................. |ddlc-transparency|
+  6. Overrides .................................... |ddlc-overrides|
+  7. Integrations ................................. |ddlc-integrations|
+
+==============================================================================
+1. INTRODUCTION                                            *ddlc-introduction*
+
+Every colour is measured off ddlc.moe by ddlc-palette and arrives here as a
+base16 scheme. This plugin decides which slot goes where and nothing else, so
+a colour is never eyeballed and never spelled out twice.
+
+Covered: core groups, treesitter captures, LSP semantic tokens, diagnostics,
+and telescope.
+
+==============================================================================
+2. SETUP                                                          *ddlc-setup*
+
+Calling setup is optional — the colorscheme works with none of it: >lua
+
+    vim.cmd.colorscheme("ddlc")
+<
+With options: >lua
+
+    require("ddlc").setup({
+      variant = "auto",
+      transparent = false,
+      transparent_floats = nil,
+      italic_comments = true,
+      integrations = { telescope = true },
+      overrides = {},
+    })
+    vim.cmd.colorscheme("ddlc")
+<
+setup() only records the options. The colours are applied by |:colorscheme|,
+so call it after, or call setup() again to re-apply with new options.
+
+==============================================================================
+3. OPTIONS                                                      *ddlc-options*
+
+                                                        *ddlc-option-variant*
+variant ~
+    "auto" (default), "dark" or "light". See |ddlc-variants|.
+
+                                                    *ddlc-option-transparent*
+transparent ~
+    false (default). Clears the grounds painted with base00 — and only those.
+    See |ddlc-transparency|.
+
+                                             *ddlc-option-transparent_floats*
+transparent_floats ~
+    nil (default), which follows `transparent`. Set true or false to take the
+    two halves apart. See |ddlc-transparency|.
+
+                                                *ddlc-option-italic_comments*
+italic_comments ~
+    true (default). Comments and block quotes in italic.
+
+                                                   *ddlc-option-integrations*
+integrations ~
+    { telescope = true }. See |ddlc-integrations|.
+
+                                                       *ddlc-option-overrides*
+overrides ~
+    {} (default). Merged last. See |ddlc-overrides|.
+
+==============================================================================
+4. VARIANTS                                                    *ddlc-variants*
+
+With `variant = "auto"` the theme reads 'background', so >vim
+
+    :set background=light
+<
+switches it. "dark" and "light" fix one and ignore 'background'.
+
+Either variant can also be named outright, whatever `variant` says: >vim
+
+    :colorscheme ddlc-dark
+    :colorscheme ddlc-light
+<
+==============================================================================
+5. TRANSPARENCY                                            *ddlc-transparency*
+
+`transparent` clears the grounds painted with base00 and no others. A cursor
+line, a selection and a completion menu sit on base01, and clearing those as
+well leaves an editor with no shape — the point is to let the terminal through
+the text area, not to erase every surface.
+
+It is one sweep over the finished highlight table rather than a flag threaded
+through each group, because what makes a window opaque is the background
+colour itself. The one case it cannot reach is a plugin that reads Normal at
+its own setup time and paints a bar out of it.
+
+`transparent_floats` works the other way round, by name: it clears
+NormalFloat, FloatBorder and FloatTitle, leaving the border to carry the
+shape. That covers every float linking to them — which-key, lspsaga,
+telescope's preview — which is why it is one switch and not an integration
+per plugin. Unset, it follows `transparent`: a float with no ground over an
+opaque buffer would be text on text.
+
+==============================================================================
+6. OVERRIDES                                                  *ddlc-overrides*
+
+Merged last, so one group can move without forking the theme: >lua
+
+    require("ddlc").setup({
+      overrides = {
+        Normal = { fg = "#FF0000" },
+        Comment = { italic = false },
+      },
+    })
+<
+==============================================================================
+7. INTEGRATIONS                                            *ddlc-integrations*
+
+                                                     *ddlc-integration-telescope*
+integrations.telescope ~
+    true (default). Off leaves every Telescope* group untouched, for a
+    telescope theme of your own.
+
+vim:tw=78:ts=8:ft=help:norl:

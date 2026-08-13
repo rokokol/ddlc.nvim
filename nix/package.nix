@@ -4,6 +4,7 @@
   vimUtils,
   colors,
   luaDir,
+  docDir,
 }:
 
 vimUtils.buildVimPlugin {
@@ -16,6 +17,7 @@ vimUtils.buildVimPlugin {
     mkdir -p $out
     cp -r ${colors} $out/colors
     cp -r ${luaDir} $out/lua
+    cp -r ${docDir} $out/doc
   '';
 
   meta = {

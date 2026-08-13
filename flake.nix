@@ -34,6 +34,10 @@
         name = "ddlc-nvim-lua";
         path = ./lua;
       };
+      docDir = builtins.path {
+        name = "ddlc-nvim-doc";
+        path = ./doc;
+      };
       testsDir = builtins.path {
         name = "ddlc-nvim-tests";
         path = ./tests;
@@ -48,12 +52,20 @@
     {
       packages = forAllSystems (pkgs: rec {
         default = ddlc-nvim;
-        ddlc-nvim = pkgs.callPackage ./nix/package.nix { inherit colors luaDir; };
+        ddlc-nvim = pkgs.callPackage ./nix/package.nix { inherit colors luaDir docDir; };
       });
 
       # A nixvim module rather than a Home Manager one: the colorscheme belongs inside the
       # editor's configuration, next to the plugins it colours
       nixvimModules.ddlc = import ./nix/module.nix { inherit self; };
+
+      # Under vimPlugins, because that is where every consumer of a neovim plugin looks —
+      # programs.neovim.plugins and home.packages both take it from there
+      overlays.default = final: prev: {
+        vimPlugins = prev.vimPlugins // {
+          inherit (self.packages.${final.stdenv.hostPlatform.system}) ddlc-nvim;
+        };
+      };
 
       checks = forAllSystems (
         pkgs:

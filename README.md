@@ -104,6 +104,8 @@ require("ddlc").setup({
 
 `:colorscheme ddlc-dark` and `:colorscheme ddlc-light` name a variant outright, whatever `variant` says
 
+All of this is `:help ddlc` inside the editor
+
 ## Transparency
 
 `transparent` clears the grounds painted with `base00` and only those. A cursor line, a selection and a completion menu sit on `base01`, and clearing those too leaves an editor with no shape at all — the point is to let the terminal's own background through the text area, not to erase every surface
@@ -137,6 +139,7 @@ tests/run.sh   # a headless neovim, against a throwaway state directory
 
 ```
 colors/           ddlc.lua, and one file per variant for naming it outright
+doc/ddlc.txt      the same options as :help ddlc
 lua/ddlc/         setup, the load, and the group tables
 lua/ddlc/palette.lua   generated from the base16 schemes — the only file here that is
 generate.sh       regenerates it
