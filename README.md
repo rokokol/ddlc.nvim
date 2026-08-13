@@ -93,9 +93,9 @@ require("ddlc").setup({
 })
 ```
 
-| | | |
+| option | default | what it does |
 | --- | --- | --- |
-| `variant` | `"auto"`, `"dark"`, `"light"` | `auto` reads `vim.o.background`, so `:set background=light` switches the theme |
+| `variant` | `"auto"` | `auto` reads `vim.o.background`, so `:set background=light` switches the theme; `"dark"` and `"light"` fix one |
 | `transparent` | `false` | the buffer ground; see below |
 | `transparent_floats` | follows `transparent` | float windows, which is every plugin that links to `NormalFloat` |
 | `italic_comments` | `true` | comments and block quotes |
@@ -116,7 +116,7 @@ Unset it follows `transparent`, which is the combination that makes sense: a flo
 
 ## What it covers
 
-| | |
+| area | what is covered |
 | --- | --- |
 | core | everything vim and neovim define — the editor chrome, the syntax groups a filetype without a parser falls back on, diffs, spelling |
 | treesitter | the `@`-captures as neovim 0.10 spells them, markup included, so a notes vault renders |
