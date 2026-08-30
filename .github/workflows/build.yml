@@ -34,7 +34,7 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
       - uses: cachix/install-nix-action@v31
-      - run: nix run nixpkgs#stylua -- --check colors lua
-      - run: nix run nixpkgs#luajitPackages.luacheck -- colors lua
-      - run: nix run nixpkgs#shellcheck -- generate.sh tests/run.sh
-      - run: nix run nixpkgs#shfmt -- -d -i 2 -ci generate.sh tests/run.sh
+      - run: nix develop --no-write-lock-file --command stylua --check colors lua
+      - run: nix develop --no-write-lock-file --command luacheck colors lua
+      - run: nix develop --no-write-lock-file --command shellcheck generate.sh tests/run.sh
+      - run: nix develop --no-write-lock-file --command shfmt -d -i 2 -ci generate.sh tests/run.sh
