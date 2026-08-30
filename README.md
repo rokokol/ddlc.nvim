@@ -28,7 +28,6 @@ Came over from my rice, **[rokokol/huix](https://github.com/rokokol/huix)**
 - [What it covers](#what-it-covers)
 - [Tests](#tests)
 - [Layout](#layout)
-- [License](#license)
 
 ## What it looks like
 
@@ -146,7 +145,3 @@ generate.sh       regenerates it
 nix/              package.nix, module.nix, module-test.nix
 workarounds.md    upstream defects this theme is shaped by
 ```
-
-## License
-
-MIT. The colours are Team Salvato's
