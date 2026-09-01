@@ -9,7 +9,14 @@
 
 vimUtils.buildVimPlugin {
   pname = "ddlc.nvim";
-  version = "0.1.0";
+  # The one source of version: VERSION at the repo root, asserted against CHANGELOG by CI
+  # (this used to say 0.1.0 while the tag said v1.0.0 — exactly the drift that ends)
+  version = lib.fileContents (
+    builtins.path {
+      name = "VERSION";
+      path = ../VERSION;
+    }
+  );
 
   # Assembled rather than taken from the repository root, so a README or a workflow edit does
   # not rebuild the plugin

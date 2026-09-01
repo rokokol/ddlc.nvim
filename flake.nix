@@ -147,8 +147,10 @@
                 touch $out
               '';
 
-          shell-is-clean =
-            pkgs.runCommand "shell-is-clean"
+          # The one shell file list lives here and nowhere else: CI's lint job is a fast
+          # named status for this check and lua-is-clean, not a second copy of the commands
+          scripts-lint =
+            pkgs.runCommand "scripts-lint"
               {
                 nativeBuildInputs = [
                   pkgs.shellcheck

@@ -10,11 +10,13 @@ The seam in `rokokol/huix` is `home-manager/programs/nixvim/settings.nix`: `impo
 
 ```sh
 nix build                # the plugin
-nix flake check          # tests, palette.lua current, module wiring, stylua + luacheck, shell lint
+nix flake check          # tests, palette.lua current, module wiring, lua-is-clean, scripts-lint
 ./tests/run.sh           # against DDLC_REPO, so the packaged plugin is what is tested
 nix develop -c ./generate.sh    # rewrite lua/ddlc/palette.lua
 nix fmt -- --ci
 ```
+
+`VERSION` is the one source of version: `nix/package.nix` reads it, CI asserts `CHANGELOG.md` has a matching heading
 
 ## Layout
 

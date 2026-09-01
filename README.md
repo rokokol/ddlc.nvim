@@ -125,7 +125,7 @@ Unset it follows `transparent`, which is the combination that makes sense: a flo
 | LSP | diagnostics in five levels, references, inlay hints, and the semantic tokens linked into the treesitter captures — a server that disagrees with the parser still looks like the file |
 | telescope | the panes carry no ground of their own; the frame carries the shape |
 
-The terminal palette (`:terminal`) is set too, slot for slot with the ANSI table [ddlc-terminal-themes](https://github.com/rokokol/ddlc-terminal-themes) gives kitty, so an embedded shell agrees with the one outside
+The terminal palette (`:terminal`) is set too, slot for slot with the ANSI table [ddlc-themes](https://github.com/rokokol/ddlc-themes) gives kitty, so an embedded shell agrees with the one outside
 
 ## Tests
 
