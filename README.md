@@ -8,6 +8,8 @@
 ![Nix](https://img.shields.io/badge/Nix-flake-7EBAE4?style=flat&logo=nixos&logoColor=white)
 [![palette](https://img.shields.io/badge/colours-ddlc--palette-FF80C0?style=flat)](https://github.com/rokokol/ddlc-palette)
 [![assets](https://img.shields.io/badge/assets-Team_Salvato-FF80C0?style=flat)](ASSETS.md)
+[![deviations](https://img.shields.io/badge/docs-deviations-555?style=flat)](DEVIATIONS.md)
+[![pitfalls](https://img.shields.io/badge/docs-pitfalls-555?style=flat)](PITFALLS.md)
 [![license](https://img.shields.io/badge/code-MIT-3DA639?style=flat)](LICENSE)
 [![build](https://github.com/rokokol/ddlc.nvim/actions/workflows/build.yml/badge.svg)](https://github.com/rokokol/ddlc.nvim/actions/workflows/build.yml)
 
@@ -110,7 +112,7 @@ All of this is `:help ddlc` inside the editor
 
 `transparent` clears the grounds painted with `base00` and only those. A cursor line, a selection and a completion menu sit on `base01`, and clearing those too leaves an editor with no shape at all — the point is to let the terminal's own background through the text area, not to erase every surface
 
-It is one sweep over the finished table rather than a flag threaded through each group, because what makes a window opaque is the background colour itself. A plugin that reads `Normal` at its own setup time and paints a bar out of it is the one case this cannot reach — see [workarounds.md](workarounds.md)
+It is one sweep over the finished table rather than a flag threaded through each group, because what makes a window opaque is the background colour itself. A plugin that reads `Normal` at its own setup time and paints a bar out of it is the one case this cannot reach — see [PITFALLS.md](PITFALLS.md)
 
 `transparent_floats` is separate and works the other way round, by name: it clears `NormalFloat`, `FloatBorder` and `FloatTitle`, leaving the border to carry the shape. That covers every float that links to them — which-key's pad, lspsaga's windows, telescope's preview — which is why it is one switch and not an integration per plugin. `base01` alone could not select them: the cursor line and the completion menu wear the same colour and are not floats
 
@@ -144,5 +146,6 @@ lua/ddlc/         setup, the load, and the group tables
 lua/ddlc/palette.lua   generated from the base16 schemes — the only file here that is
 generate.sh       regenerates it
 nix/              package.nix, module.nix, module-test.nix
-workarounds.md    upstream defects this theme is shaped by
+DEVIATIONS.md     why the theme departs from a base16 template
+PITFALLS.md       load-order traps around transparency
 ```

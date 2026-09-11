@@ -2,6 +2,12 @@
 
 Kept in the shape of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioned by [semver](https://semver.org/spec/v2.0.0.html)
 
+## [Unreleased]
+
+### Changed
+
+- the former `workarounds.md` is split by purpose: architectural choices live in `DEVIATIONS.md`, while the load-order trap for plugins that copy `Normal` lives in `PITFALLS.md`; both are linked from the README header
+
 ## [1.1.0] - 2026-09-01
 
 ### Added

@@ -27,7 +27,8 @@ lua/ddlc/         setup, the load, and the group tables
 lua/ddlc/palette.lua   generated from the base16 schemes — the only file here that is
 generate.sh       regenerates it
 nix/              package.nix, module.nix, module-test.nix
-workarounds.md    upstream defects this theme is shaped by
+DEVIATIONS.md     why the theme departs from a base16 template
+PITFALLS.md       load-order traps around transparency
 ```
 
 Adding an option means three places: the lua default, the README table and `doc/ddlc.txt`. The help is not a copy of the README — it is the same facts in vimdoc form, and `:help ddlc` is what a user inside the editor reaches for
