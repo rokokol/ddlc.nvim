@@ -2,6 +2,25 @@
 # The theme against a headless neovim. tests/assert.lua does the checking; this only isolates
 set -euo pipefail
 
+usage() {
+  cat <<'EOF'
+tests/run.sh — the fast suite for ddlc.nvim: runs tests/assert.lua against a headless
+neovim, isolated from any live session's state
+
+  tests/run.sh
+
+NVIM picks the binary (default: nvim on PATH); DDLC_REPO picks the checkout tested
+(default: the one this script lives in)
+
+Nothing here reaches the network
+Exit: 0 all passed, 1 a check failed
+EOF
+}
+[[ "${1:-}" == "-h" || "${1:-}" == "--help" || "${1:-}" == "help" ]] && {
+  usage
+  exit 0
+}
+
 here="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 nvim="${NVIM:-nvim}"
 

@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Render lua/ddlc/palette.lua from ddlc-palette's base16 schemes. The group tables next to it are
-# the theme's own design and are written by hand — only the colours come from upstream
 set -euo pipefail
 
 here="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -9,6 +7,9 @@ out="$here/lua/ddlc/palette.lua"
 usage() {
   cat <<EOF
 generate.sh — render the palette table out of the base16 schemes
+
+Render lua/ddlc/palette.lua from ddlc-palette's base16 schemes. The group tables next to it are
+the theme's own design and are written by hand — only the colours come from upstream
 
   --light FILE   base16-ddlc-light.yaml   (or \$DDLC_BASE16_LIGHT)
   --dark FILE    base16-ddlc-dark.yaml    (or \$DDLC_BASE16_DARK)

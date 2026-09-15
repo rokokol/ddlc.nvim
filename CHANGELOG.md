@@ -7,6 +7,7 @@ Kept in the shape of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), v
 ### Changed
 
 - the former `workarounds.md` is split by purpose: architectural choices live in `DEVIATIONS.md`, while the load-order trap for plugins that copy `Normal` lives in `PITFALLS.md`; both are linked from the README header
+- `generate.sh`'s header comment is trimmed to the shebang alone; what it renders and from where now lives in `--help`. `tests/run.sh -h|--help|help` documents the suite: `NVIM`, `DDLC_REPO`, and that nothing in it reaches the network
 
 ## [1.1.0] - 2026-09-01
 
