@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# The theme against a headless neovim. tests/assert.lua does the checking; this only isolates
 set -euo pipefail
 
 usage() {
