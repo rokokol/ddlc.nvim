@@ -1,37 +1,39 @@
 #!/usr/bin/env bash
-# Keeps verbatim copies of files that other repositories own, one line per copy in
-# .github/vendor.lock: where the copy lives here, which repository and path it comes from,
-# the commit it was taken at, and the git blob it must still be. A copy is never edited in
-# place — the change goes to its source and comes back through the cascade, which runs
-# `update` weekly and lands the result only on green. The procedure is described in
-# references/bump-cascade.md of https://github.com/rokokol/ci-skill
-#
-#   vendor-sync.sh check
-#   vendor-sync.sh update [--manual] [-u BASE]
-#   vendor-sync.sh add [--manual] [-u BASE] LOCAL OWNER/REPO PATH
-#
-# check is offline and belongs in the repository's gate: every copy must still be the blob
-# its line records, and a copy that is not was edited in place and is named. update refuses
-# to run over such a copy, then takes each source's current HEAD and replaces every copy
-# whose content moved, with its line; a copy whose content did not move keeps its line, so
-# a source's unrelated commits never touch the lock. add takes a new copy and writes its
-# line. A PATH ending in / is a directory kept whole: a file deleted or added in the source
-# is deleted or added here; one holding a symlink is refused, since a copy cannot keep it.
-#
-# A copy that lands under .github/workflows/ is taken only with --manual: the token a
-# workflow runs with cannot push a workflow file, so such copies are refreshed by a person.
-# update takes the ordinary lines, and names each manual line whose source has moved
-# rather than skipping it in silence; update --manual takes the manual lines and only
-# those. BASE is where OWNER/REPO is fetched from (default https://github.com, file://DIR
-# for a local source), and a source has to be reachable there without credentials. Run it
-# from the repository root.
-#
-# Exit 1 with `vendor-sync: <what>` on a finding or a failed fetch, 2 on a usage error.
-# Needs bash 3.2, git and POSIX tools only.
+# Needs bash 3.2, git and POSIX tools only
 set -euo pipefail
 
-# The whole header, however long it grows: up to the first line that is not a comment
-usage() { sed -n '2,/^[^#]/p' "${BASH_SOURCE[0]}" | sed '$d; s/^# \{0,1\}//'; }
+usage() {
+  cat <<'EOF'
+Keeps verbatim copies of files that other repositories own, one line per copy in
+.github/vendor.lock: where the copy lives here, which repository and path it comes from,
+the commit it was taken at, and the git blob it must still be. A copy is never edited in
+place — the change goes to its source and comes back through the cascade, which runs
+`update` weekly and lands the result only on green. The procedure is described in
+references/bump-cascade.md of https://github.com/rokokol/ci-skill
+
+  vendor-sync.sh check
+  vendor-sync.sh update [--manual] [-u BASE]
+  vendor-sync.sh add [--manual] [-u BASE] LOCAL OWNER/REPO PATH
+
+check is offline and belongs in the repository's gate: every copy must still be the blob
+its line records, and a copy that is not was edited in place and is named. update refuses
+to run over such a copy, then takes each source's current HEAD and replaces every copy
+whose content moved, with its line; a copy whose content did not move keeps its line, so
+a source's unrelated commits never touch the lock. add takes a new copy and writes its
+line. A PATH ending in / is a directory kept whole: a file deleted or added in the source
+is deleted or added here; one holding a symlink is refused, since a copy cannot keep it
+
+A copy that lands under .github/workflows/ is taken only with --manual: the token a
+workflow runs with cannot push a workflow file, so such copies are refreshed by a person.
+update takes the ordinary lines, and names each manual line whose source has moved
+rather than skipping it in silence; update --manual takes the manual lines and only
+those. BASE is where OWNER/REPO is fetched from (default https://github.com, file://DIR
+for a local source), and a source has to be reachable there without credentials. Run it
+from the repository root
+
+Exit 1 with `vendor-sync: <what>` on a finding or a failed fetch, 2 on a usage error
+EOF
+}
 
 lock=.github/vendor.lock
 
@@ -130,7 +132,10 @@ fetch() {
 no_symlink() {
   local repo="$1" sha="$2" path="$3" found
   case "$path" in */) ;; *) return 0 ;; esac
-  found=$(git -C "$src" ls-tree -r "$sha:${path%/}" | awk '$1 == "120000" { sub(/^[^\t]*\t/, ""); print; exit }')
+  # The awk reads to the end rather than stopping at the first symlink: an `exit` closes
+  # the pipe, `git ls-tree` dies of SIGPIPE, and pipefail makes 141 the status of a command
+  # that found exactly what it was looking for
+  found=$(git -C "$src" ls-tree -r "$sha:${path%/}" | awk '$1 == "120000" && !seen { sub(/^[^\t]*\t/, ""); print; seen = 1 }')
   [[ -z "$found" ]] || fail "$repo's $path holds a symlink, $found, which a copy cannot keep byte for byte"
 }
 
