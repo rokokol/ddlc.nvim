@@ -16,7 +16,7 @@
       ddlc-palette,
     }:
     let
-      lib = nixpkgs.lib;
+      inherit (nixpkgs) lib;
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -77,9 +77,9 @@
           tests =
             pkgs.runCommand "tests"
               {
-                nativeBuildInputs = [
-                  pkgs.bash
-                  pkgs.neovim
+                nativeBuildInputs = with pkgs; [
+                  bash
+                  neovim
                 ];
               }
               ''
@@ -110,7 +110,7 @@
             in
             pkgs.runCommand "module-wiring"
               {
-                nativeBuildInputs = [ pkgs.jq ];
+                nativeBuildInputs = with pkgs; [ jq ];
                 dump = builtins.toJSON wiring;
                 passAsFile = [ "dump" ];
               }
@@ -132,9 +132,9 @@
           lua-is-clean =
             pkgs.runCommand "lua-is-clean"
               {
-                nativeBuildInputs = [
-                  pkgs.stylua
-                  pkgs.luajitPackages.luacheck
+                nativeBuildInputs = with pkgs; [
+                  stylua
+                  luajitPackages.luacheck
                 ];
               }
               ''
@@ -152,9 +152,9 @@
           scripts-lint =
             pkgs.runCommand "scripts-lint"
               {
-                nativeBuildInputs = [
-                  pkgs.shellcheck
-                  pkgs.shfmt
+                nativeBuildInputs = with pkgs; [
+                  shellcheck
+                  shfmt
                 ];
               }
               ''

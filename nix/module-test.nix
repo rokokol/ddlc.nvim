@@ -58,7 +58,7 @@ let
 in
 {
   plugins = map (p: p.pname or p.name) on.extraPlugins;
-  colorscheme = on.colorscheme;
+  inherit (on) colorscheme;
   setup = on.extraConfigLuaPre;
 
   offPlugins = off.extraPlugins;
