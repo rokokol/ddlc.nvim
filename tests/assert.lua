@@ -4,6 +4,7 @@ vim.opt.runtimepath:prepend(repo)
 
 local ddlc = require("ddlc")
 local palette = require("ddlc.palette")
+local syntax = require("ddlc.syntax")
 
 local failed = 0
 local function check(name, ok, got)
@@ -35,7 +36,11 @@ check("names itself", vim.g.colors_name == "ddlc", vim.g.colors_name)
 check("Normal carries the ground", hex(hl("Normal").bg) == dark.base00, hex(hl("Normal").bg))
 check("Normal carries the text", hex(hl("Normal").fg) == dark.base05, hex(hl("Normal").fg))
 check("comments are italic", hl("Comment").italic == true, hl("Comment"))
-check("treesitter is covered", hex(hl("@keyword").fg) == dark.base0E, hex(hl("@keyword").fg))
+check("treesitter is covered", hex(hl("@keyword").fg) == syntax.dark.keyword, hex(hl("@keyword").fg))
+-- Code reads the syntax table every DDLC editor theme shares, the editor's surfaces the slots
+check("a parameter takes the shared builtin", hex(hl("@variable.parameter").fg) == syntax.dark.builtin, hex(hl("@variable.parameter").fg))
+check("a delimiter takes the shared delimiter", hex(hl("Delimiter").fg) == syntax.dark.delimiter, hex(hl("Delimiter").fg))
+check("the cursor line stays on its slot", hex(hl("CursorLine").bg) == dark.base01, hex(hl("CursorLine").bg))
 check("markup is covered", hl("@markup.heading").bold == true, hl("@markup.heading"))
 check("diagnostics are covered", hex(hl("DiagnosticError").fg) == dark.base08, hex(hl("DiagnosticError").fg))
 check("the squiggle carries the level", hl("DiagnosticUnderlineWarn").undercurl == true, hl("DiagnosticUnderlineWarn"))
@@ -94,6 +99,9 @@ vim.cmd("colorscheme ddlc-light")
 check("the light variant names itself", vim.g.colors_name == "ddlc-light", vim.g.colors_name)
 check("the light variant moves 'background'", vim.o.background == "light", vim.o.background)
 check("the light ground", hex(hl("Normal").bg) == palette.light.base00, hex(hl("Normal").bg))
+check("light numbers take the shared table", hex(hl("Number").fg) == syntax.light.number, hex(hl("Number").fg))
+check("light types take the shared table", hex(hl("@type").fg) == syntax.light.type, hex(hl("@type").fg))
+check("light comments take the shared table", hex(hl("Comment").fg) == syntax.light.comment, hex(hl("Comment").fg))
 
 reset()
 vim.o.background = "light"

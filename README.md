@@ -15,7 +15,7 @@
 
 </div>
 
-Every colour is measured off [ddlc.moe](https://ddlc.moe) by [ddlc-palette](https://github.com/rokokol/ddlc-palette) and arrives here as a base16 scheme — the theme picks which slot goes where and nothing else. Core groups, treesitter captures, LSP semantic tokens and diagnostics, plus a telescope integration
+Every colour is measured off [ddlc.moe](https://ddlc.moe) by [ddlc-palette](https://github.com/rokokol/ddlc-palette) and arrives here as a base16 scheme, and the theme picks which slot goes where and nothing else. Code takes its colours from the syntax table of [ddlc-themes](https://github.com/rokokol/ddlc-themes), so it reads the same as in opencode, the Obsidian theme and the DDLC reports, and every syntax colour holds 3:1 on its ground in both variants. Core groups, treesitter captures, LSP semantic tokens and diagnostics, plus a telescope integration
 
 Came over from my rice, **[rokokol/huix](https://github.com/rokokol/huix)**
 
@@ -143,8 +143,9 @@ tests/run.sh   # a headless neovim, against a throwaway state directory
 colors/           ddlc.lua, and one file per variant for naming it outright
 doc/ddlc.txt      the same options as :help ddlc
 lua/ddlc/         setup, the load, and the group tables
-lua/ddlc/palette.lua   generated from the base16 schemes — the only file here that is
-generate.sh       regenerates it
+lua/ddlc/palette.lua   generated from the base16 schemes
+lua/ddlc/syntax.lua    generated from the ddlc-themes syntax table
+generate.sh       regenerates both
 nix/              package.nix, module.nix, module-test.nix
 DEVIATIONS.md     why the theme departs from a base16 template
 PITFALLS.md       load-order traps around transparency

@@ -16,7 +16,9 @@ CONTENTS                                                       *ddlc-contents*
 
 Every colour is measured off ddlc.moe by ddlc-palette and arrives here as a
 base16 scheme. This plugin decides which slot goes where and nothing else, so
-a colour is never eyeballed and never spelled out twice.
+a colour is never eyeballed and never spelled out twice. Code takes the
+syntax table of ddlc-themes, the one opencode and the Obsidian theme read too,
+and every syntax colour holds 3:1 on its ground in both variants.
 
 Covered: core groups, treesitter captures, LSP semantic tokens, diagnostics,
 and telescope.

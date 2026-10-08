@@ -7,6 +7,12 @@
       url = "github:rokokol/ddlc-palette";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # The syntax colours every DDLC editor theme shares
+    ddlc-themes = {
+      url = "github:rokokol/ddlc-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.ddlc-palette.follows = "ddlc-palette";
+    };
   };
 
   outputs =
@@ -14,6 +20,7 @@
       self,
       nixpkgs,
       ddlc-palette,
+      ddlc-themes,
     }:
     let
       inherit (nixpkgs) lib;
@@ -48,6 +55,7 @@
       };
 
       schemes = ddlc-palette.lib.dist.base16;
+      inherit (ddlc-themes.lib) syntax;
     in
     {
       packages = forAllSystems (pkgs: rec {
@@ -88,14 +96,16 @@
                 touch $out
               '';
 
-          # The palette table is generated and committed, so a clone without Nix still has the
-          # colours; this proves it is what the generator writes against the locked palette
+          # The palette and syntax tables are generated and committed, so a clone without Nix
+          # still has the colours; this proves they are what the generator writes against the
+          # locked palette and syntax table
           palette-is-current = pkgs.runCommand "palette-is-current" { } ''
             mkdir -p lua/ddlc
             install -m755 ${generator} generate.sh
             DDLC_BASE16_LIGHT=${schemes.light} DDLC_BASE16_DARK=${schemes.dark} \
-              bash generate.sh >/dev/null
+              DDLC_SYNTAX=${syntax} bash generate.sh >/dev/null
             diff ${luaDir}/ddlc/palette.lua lua/ddlc/palette.lua
+            diff ${luaDir}/ddlc/syntax.lua lua/ddlc/syntax.lua
             touch $out
           '';
 
@@ -180,6 +190,7 @@
           # So generate.sh runs with no arguments inside the shell
           DDLC_BASE16_LIGHT = schemes.light;
           DDLC_BASE16_DARK = schemes.dark;
+          DDLC_SYNTAX = syntax;
         };
       });
 

@@ -2,6 +2,13 @@
 
 Kept in the shape of [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioned by [semver](https://semver.org/spec/v2.0.0.html)
 
+## [Unreleased]
+
+### Changed
+
+- code takes its colours from the syntax table of [ddlc-themes](https://github.com/rokokol/ddlc-themes), the one opencode, the Obsidian theme and the DDLC reports read too; the editor's own surfaces stay on the base16 slots
+- every syntax colour now holds 3:1 on its ground. In dark, parameters, builtins, characters, exceptions and macros are `natsuki` instead of `bow`, and delimiters and escapes are `ash` instead of `bowShadow`. In light, numbers, constants and booleans are `yuri` instead of `sayori`, types, tags and attributes are `rule` instead of `monika`, and comments and quotes are the muted mix of ink and jacket instead of the bare jacket
+
 ## [1.1.1] - 2026-09-21
 
 ### Changed

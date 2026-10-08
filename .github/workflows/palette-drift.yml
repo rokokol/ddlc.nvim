@@ -1,9 +1,9 @@
 name: palette-drift
 
-# Regenerates the palette table against ddlc-palette's HEAD every week and opens a pull request
-# when a colour has moved upstream. Separate from the main check on purpose: that one renders
-# against the locked palette and would keep passing forever while the theme drifts away from
-# the measured colours
+# Regenerates the palette and syntax tables against the HEAD of ddlc-palette and ddlc-themes every
+# week and opens a pull request when a colour has moved upstream. Separate from the main check on
+# purpose: that one renders against the locked inputs and would keep passing forever while the
+# theme drifts away from them
 on:
   schedule:
     - cron: "0 7 * * 1"
@@ -20,23 +20,25 @@ jobs:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
 
-      - name: take the palette's HEAD
+      - name: take the palette's and the syntax table's HEAD
         run: |
-          nix flake update ddlc-palette
+          nix flake update ddlc-palette ddlc-themes
           nix develop -c ./generate.sh
 
       - name: open a pull request if it drifted
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          table=lua/ddlc/palette.lua
-          if git diff --quiet -- $table; then
-            echo "the theme still matches the palette"
+          tables="lua/ddlc/palette.lua lua/ddlc/syntax.lua"
+          # shellcheck disable=SC2086 # the tables are a word list on purpose
+          if git diff --quiet -- $tables; then
+            echo "the theme still matches the palette and the syntax table"
             exit 0
           fi
 
-          # Which slot moved where, so the notification alone says whether this needs a look
-          summary=$(git diff -U0 -- $table | grep -E '^[-+] +base' | head -20)
+          # Which slot or role moved where, so the notification alone says whether this needs a look
+          # shellcheck disable=SC2086
+          summary=$(git diff -U0 -- $tables | grep -E '^[-+] +(base|\[")' | head -20)
           branch=palette/$(date -u +%Y-%m-%d)
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -1,50 +1,52 @@
 -- The @-captures, as neovim 0.10 spells them. Only the ones that depart from the legacy group
--- they already fall back to are listed — a capture that wants Comment simply keeps it
-return function(c, cfg)
+-- they already fall back to are listed — a capture that wants Comment simply keeps it.
+-- Code takes the shared syntax table; the levels of a comment and of a diff stay on the
+-- base16 slots the diagnostics use, so a marker reads the same in the gutter and in the text
+return function(c, cfg, s)
   return {
     -- Text
-    ["@variable"] = { fg = c.base05 },
-    ["@variable.builtin"] = { fg = c.base08 },
-    ["@variable.parameter"] = { fg = c.base08 },
-    ["@variable.member"] = { fg = c.base05 },
-    ["@property"] = { fg = c.base05 },
-    ["@field"] = { fg = c.base05 },
+    ["@variable"] = { fg = s.text },
+    ["@variable.builtin"] = { fg = s.builtin },
+    ["@variable.parameter"] = { fg = s.builtin },
+    ["@variable.member"] = { fg = s.text },
+    ["@property"] = { fg = s.text },
+    ["@field"] = { fg = s.text },
 
     -- Literals
-    ["@string.regexp"] = { fg = c.base0C },
-    ["@string.escape"] = { fg = c.base0F },
-    ["@string.special"] = { fg = c.base0F },
-    ["@character.special"] = { fg = c.base0F },
+    ["@string.regexp"] = { fg = s.special },
+    ["@string.escape"] = { fg = s.delimiter },
+    ["@string.special"] = { fg = s.delimiter },
+    ["@character.special"] = { fg = s.delimiter },
 
     -- Callables
-    ["@function"] = { fg = c.base0D },
-    ["@function.builtin"] = { fg = c.base0D },
-    ["@function.method"] = { fg = c.base0D },
-    ["@function.macro"] = { fg = c.base08 },
-    ["@constructor"] = { fg = c.base0A },
+    ["@function"] = { fg = s["function"] },
+    ["@function.builtin"] = { fg = s["function"] },
+    ["@function.method"] = { fg = s["function"] },
+    ["@function.macro"] = { fg = s.builtin },
+    ["@constructor"] = { fg = s.type },
 
     -- Keywords, which the palette spends its magenta on
-    ["@keyword"] = { fg = c.base0E },
-    ["@keyword.function"] = { fg = c.base0E },
-    ["@keyword.operator"] = { fg = c.base0E },
-    ["@keyword.return"] = { fg = c.base0E },
-    ["@keyword.import"] = { fg = c.base0D },
-    ["@keyword.exception"] = { fg = c.base08 },
-    ["@keyword.directive"] = { fg = c.base0A },
+    ["@keyword"] = { fg = s.keyword },
+    ["@keyword.function"] = { fg = s.keyword },
+    ["@keyword.operator"] = { fg = s.keyword },
+    ["@keyword.return"] = { fg = s.keyword },
+    ["@keyword.import"] = { fg = s["function"] },
+    ["@keyword.exception"] = { fg = s.builtin },
+    ["@keyword.directive"] = { fg = s.type },
 
     -- Types and modules
-    ["@type"] = { fg = c.base0A },
-    ["@type.builtin"] = { fg = c.base0A },
-    ["@type.definition"] = { fg = c.base0A },
-    ["@attribute"] = { fg = c.base0A },
-    ["@module"] = { fg = c.base0A },
-    ["@label"] = { fg = c.base0A },
+    ["@type"] = { fg = s.type },
+    ["@type.builtin"] = { fg = s.type },
+    ["@type.definition"] = { fg = s.type },
+    ["@attribute"] = { fg = s.type },
+    ["@module"] = { fg = s.type },
+    ["@label"] = { fg = s.type },
 
     -- Punctuation: the brackets stay text, only what separates gets a colour
-    ["@operator"] = { fg = c.base05 },
-    ["@punctuation.bracket"] = { fg = c.base05 },
-    ["@punctuation.delimiter"] = { fg = c.base0F },
-    ["@punctuation.special"] = { fg = c.base0F },
+    ["@operator"] = { fg = s.text },
+    ["@punctuation.bracket"] = { fg = s.text },
+    ["@punctuation.delimiter"] = { fg = s.delimiter },
+    ["@punctuation.special"] = { fg = s.delimiter },
 
     -- Comments beyond the plain one
     ["@comment.error"] = { fg = c.base08 },
@@ -53,24 +55,24 @@ return function(c, cfg)
     ["@comment.todo"] = { link = "Todo" },
 
     -- Markup, which is most of what a notes vault renders as
-    ["@markup.heading"] = { fg = c.base0D, bold = true },
+    ["@markup.heading"] = { fg = s.heading, bold = true },
     ["@markup.strong"] = { bold = true },
     ["@markup.italic"] = { italic = true },
     ["@markup.strikethrough"] = { strikethrough = true },
     ["@markup.underline"] = { underline = true },
-    ["@markup.link"] = { fg = c.base0D },
-    ["@markup.link.url"] = { fg = c.base0C, underline = true },
-    ["@markup.link.label"] = { fg = c.base0E },
-    ["@markup.raw"] = { fg = c.base0B },
-    ["@markup.list"] = { fg = c.base0E },
-    ["@markup.quote"] = { fg = c.base03, italic = cfg.italic_comments },
-    ["@markup.math"] = { fg = c.base0C },
+    ["@markup.link"] = { fg = s.link },
+    ["@markup.link.url"] = { fg = s.url, underline = true },
+    ["@markup.link.label"] = { fg = s["link-label"] },
+    ["@markup.raw"] = { fg = s.raw },
+    ["@markup.list"] = { fg = s.list },
+    ["@markup.quote"] = { fg = s.quote, italic = cfg.italic_comments },
+    ["@markup.math"] = { fg = s.special },
 
     -- Tags, which is HTML and JSX
-    ["@tag"] = { fg = c.base0A },
-    ["@tag.builtin"] = { fg = c.base0A },
-    ["@tag.attribute"] = { fg = c.base0D },
-    ["@tag.delimiter"] = { fg = c.base0F },
+    ["@tag"] = { fg = s.type },
+    ["@tag.builtin"] = { fg = s.type },
+    ["@tag.attribute"] = { fg = s["function"] },
+    ["@tag.delimiter"] = { fg = s.delimiter },
 
     ["@diff.plus"] = { fg = c.base0B },
     ["@diff.minus"] = { fg = c.base08 },

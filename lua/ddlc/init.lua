@@ -60,6 +60,9 @@ function M.groups(variant, config)
   if not c then
     error("ddlc: no such variant: " .. tostring(name))
   end
+  -- The code takes the syntax table every DDLC editor theme shares; the editor's own
+  -- surfaces stay on the base16 slots
+  local s = require("ddlc.syntax")[name]
 
   local groups = {}
   local function merge(t)
@@ -68,8 +71,8 @@ function M.groups(variant, config)
     end
   end
 
-  merge(require("ddlc.groups.core")(c, cfg))
-  merge(require("ddlc.groups.treesitter")(c, cfg))
+  merge(require("ddlc.groups.core")(c, cfg, s))
+  merge(require("ddlc.groups.treesitter")(c, cfg, s))
   merge(require("ddlc.groups.lsp")(c, cfg))
   for integration, on in pairs(cfg.integrations) do
     if on then
