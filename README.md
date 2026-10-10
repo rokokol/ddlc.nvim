@@ -6,6 +6,7 @@
 
 ![neovim](https://img.shields.io/badge/neovim-0.10%2B-76C332?style=flat&logo=neovim&logoColor=white)
 ![Nix](https://img.shields.io/badge/Nix-flake-7EBAE4?style=flat&logo=nixos&logoColor=white)
+[![FlakeHub](https://img.shields.io/endpoint?url=https://flakehub.com/f/rokokol/ddlc.nvim/badge)](https://flakehub.com/flake/rokokol/ddlc.nvim)
 [![palette](https://img.shields.io/badge/colours-ddlc--palette-FF80C0?style=flat)](https://github.com/rokokol/ddlc-palette)
 [![assets](https://img.shields.io/badge/assets-Team_Salvato-FF80C0?style=flat)](ASSETS.md)
 [![deviations](https://img.shields.io/badge/docs-deviations-555?style=flat)](DEVIATIONS.md)

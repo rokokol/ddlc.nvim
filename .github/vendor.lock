@@ -5,3 +5,4 @@
 vendor-sync.sh rokokol/ci-skill templates/vendor-sync.sh 50429c30159553c635ab0020c399d6cc9c17f705 176a58470c142a98cb6434a889b3e98fea266ad3
 check-pins.sh rokokol/ci-skill templates/check-pins.sh 50429c30159553c635ab0020c399d6cc9c17f705 c86f8288606d532f7982206eea8e8a310315d7f6
 .github/workflows/vendor-sync.yml rokokol/ci-skill templates/github/workflows/vendor-sync.yml d55020ab3ca780ea6299336d923b8a3fcb8f491d a5bde77f98d55a43b2c993f4c96a952e0b68010d manual
+.github/workflows/flakehub-publish.yml rokokol/ci-skill templates/github/workflows/flakehub-publish.yml 0460ab59ee4d9a4f490641c95aa0db16ef5f24ac 407d7ebc264a8fe16ee2aa2fe2f31863255f3de7 manual
